@@ -1,9 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import SampleLoader from '../../components/SampleLoader/SampleLoader';
+import PromiseBox from '../../components/PromiseBox/PromiseBox';
+import RandomBeep from '../../components/RandomBeep/RandomBeep';
 
-class DashboardRoute extends Component {
-  render() {
-    return <section>implement and style me</section>;
-  }
+function DashboardRoute() {
+  return (
+    <section>
+      <SampleLoader
+        details={{
+          name: 'roy',
+          company: 'Ninjas',
+          party: 'Democratic',
+          location: 'New Jersey'
+        }}
+      />
+      <PromiseBox />
+      <RandomBeep />
+    </section>
+  );
 }
 
 export default DashboardRoute;

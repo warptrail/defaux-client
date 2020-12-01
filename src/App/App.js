@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+
 import Header from '../components/Header/Header';
 import PrivateRoute from '../utils/PrivateRoute';
 import PublicOnlyRoute from '../utils/PublicOnlyRoute';
@@ -8,6 +9,7 @@ import LoginRoute from '../routes/LoginRoute/LoginRoute';
 import DashboardRoute from '../routes/DashboardRoute/DashboardRoute';
 import WidgetRoute from '../routes/WidgetRoute/WidgetRoute';
 import SingleWidgetRoute from '../routes/SingleWidgetRoute/SingleWidgetRoute';
+import CalendarRoute from '../routes/CalendarRoute/CalendarRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
 import './App.css';
 
@@ -36,6 +38,7 @@ export default class App extends Component {
               path="/widget/:widgetId"
               component={SingleWidgetRoute}
             />
+            <PrivateRoute exact path="/calendar" component={CalendarRoute} />
             <Route component={NotFoundRoute} />
           </Switch>
         </main>

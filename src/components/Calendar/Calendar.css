@@ -1,0 +1,10 @@
+.this_month_info {
+  border: 1px solid royalblue;
+  margin: 30px 20px;
+  padding: 20px;
+}
+
+.icon {
+  font-size: 80px;
+  text-align: center;
+}

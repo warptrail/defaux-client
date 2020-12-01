@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TokenService from '../../services/token-service';
 import UserContext from '../../contexts/UserContext';
+
+import Counter from './Counter';
+
 import './Header.css';
 
 class Header extends Component {
@@ -36,11 +39,26 @@ class Header extends Component {
     return (
       <header>
         <h1>
-          <Link to="/">Warp Trail Default Application Interface</Link>
+          <Link to="/" style={{ color: 'red' }}>
+            Warp Trail Default Application Interface
+          </Link>
         </h1>
-        {TokenService.hasAuthToken()
-          ? this.renderLogoutLink()
-          : this.renderLoginLink()}
+        <nav>
+          <ul>
+            <li>
+              {TokenService.hasAuthToken()
+                ? this.renderLogoutLink()
+                : this.renderLoginLink()}
+            </li>
+            <li>
+              <Link to="/widget">Widgets</Link>
+            </li>
+            <li>
+              <Link to="/calendar">calendar</Link>
+            </li>
+          </ul>
+        </nav>
+        <Counter />
       </header>
     );
   }
