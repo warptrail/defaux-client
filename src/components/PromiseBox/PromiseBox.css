@@ -1,6 +1,12 @@
 .promise_box {
+  display: flex;
+  flex-direction: column;
   border: 1px solid green;
   margin: 25px;
   padding: 25px;
   text-align: center;
+}
+
+.promise {
+  margin: 0 auto;
 }

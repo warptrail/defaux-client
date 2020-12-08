@@ -13,6 +13,7 @@ function Counter() {
     const id = setInterval(() => {
       setOtherCount(otherCount + 1);
     }, 1000);
+    const yello = 'hi';
     return () => clearInterval(id);
   }, [otherCount]);
 

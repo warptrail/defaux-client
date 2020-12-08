@@ -54,7 +54,10 @@ class Header extends Component {
               <Link to="/widget">Widgets</Link>
             </li>
             <li>
-              <Link to="/calendar">calendar</Link>
+              <Link to="/calendar">Calendar</Link>
+            </li>
+            <li>
+              <Link to="/Music">Music</Link>
             </li>
           </ul>
         </nav>

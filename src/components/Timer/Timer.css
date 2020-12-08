@@ -1,0 +1,22 @@
+.timer_container {
+  color: white;
+  border: 1px solid white;
+  text-align: center;
+  padding: 30px;
+  margin: 30px;
+}
+
+.timer_controls {
+  display: flex;
+  width: 80px;
+  border-radius: 100%;
+  justify-content: center;
+  padding: 10px;
+  background-color: blueviolet;
+  margin: 10px auto;
+}
+
+.timer_controls:hover {
+  background-color: navy;
+  color: yellow;
+}

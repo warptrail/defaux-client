@@ -10,6 +10,7 @@ import DashboardRoute from '../routes/DashboardRoute/DashboardRoute';
 import WidgetRoute from '../routes/WidgetRoute/WidgetRoute';
 import SingleWidgetRoute from '../routes/SingleWidgetRoute/SingleWidgetRoute';
 import CalendarRoute from '../routes/CalendarRoute/CalendarRoute';
+import MusicRoute from '../routes/MusicRoute/MusicRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
 import './App.css';
 
@@ -39,6 +40,7 @@ export default class App extends Component {
               component={SingleWidgetRoute}
             />
             <PrivateRoute exact path="/calendar" component={CalendarRoute} />
+            <Route exact path="/music" component={MusicRoute} />
             <Route component={NotFoundRoute} />
           </Switch>
         </main>

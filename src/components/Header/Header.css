@@ -10,6 +10,7 @@ header a {
 h1 {
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .header_counter {
@@ -19,4 +20,14 @@ h1 {
   margin: 50px;
   padding: 20px;
   text-align: center;
+}
+
+header nav ul {
+  display: flex;
+  justify-content: center;
+}
+
+header nav ul li {
+  padding: 10px 20px;
+  list-style: none;
 }
