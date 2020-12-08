@@ -15,23 +15,28 @@ class Header extends Component {
   };
 
   renderLogoutLink() {
+    console.log(this.context.user.username);
     return (
-      <div>
-        <span>{this.context.user.name}</span>
-        <nav>
+      <>
+        <li>
           <Link onClick={this.handleLogoutClick} to="/login">
             Logout
           </Link>
-        </nav>
-      </div>
+        </li>
+      </>
     );
   }
 
   renderLoginLink() {
     return (
-      <nav>
-        <Link to="/login">Login</Link> <Link to="/register">Sign up</Link>
-      </nav>
+      <>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        <li>
+          <Link to="/register">Sign up</Link>
+        </li>
+      </>
     );
   }
 
@@ -43,13 +48,13 @@ class Header extends Component {
             Warp Trail Default Application Interface
           </Link>
         </h1>
+        <h2>Welcome {this.context.user.username}</h2>
         <nav>
           <ul>
-            <li>
-              {TokenService.hasAuthToken()
-                ? this.renderLogoutLink()
-                : this.renderLoginLink()}
-            </li>
+            {TokenService.hasAuthToken()
+              ? this.renderLogoutLink()
+              : this.renderLoginLink()}
+
             <li>
               <Link to="/widget">Widgets</Link>
             </li>
@@ -58,6 +63,9 @@ class Header extends Component {
             </li>
             <li>
               <Link to="/Music">Music</Link>
+            </li>
+            <li>
+              <Link to="/time">Time</Link>
             </li>
           </ul>
         </nav>

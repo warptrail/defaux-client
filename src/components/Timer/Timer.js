@@ -8,7 +8,6 @@ import { faPause } from '@fortawesome/free-solid-svg-icons';
 function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  const [intervalId, setIntervalId] = useState(null);
 
   const playIcon = <FontAwesomeIcon icon={faPlay} />;
   const pauseIcon = <FontAwesomeIcon icon={faPause} />;
@@ -21,7 +20,8 @@ function Timer() {
       }, 1000);
       return () => window.clearInterval(id);
     }
-  }, [isRunning]);
+    return undefined;
+  }, [isRunning, seconds]);
 
   return (
     <div className="timer_container">

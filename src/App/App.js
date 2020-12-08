@@ -9,6 +9,7 @@ import LoginRoute from '../routes/LoginRoute/LoginRoute';
 import DashboardRoute from '../routes/DashboardRoute/DashboardRoute';
 import WidgetRoute from '../routes/WidgetRoute/WidgetRoute';
 import SingleWidgetRoute from '../routes/SingleWidgetRoute/SingleWidgetRoute';
+import TimeRoute from '../routes/TimeRoute/TimeRoute';
 import CalendarRoute from '../routes/CalendarRoute/CalendarRoute';
 import MusicRoute from '../routes/MusicRoute/MusicRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
@@ -41,6 +42,7 @@ export default class App extends Component {
             />
             <PrivateRoute exact path="/calendar" component={CalendarRoute} />
             <Route exact path="/music" component={MusicRoute} />
+            <Route exact path="/time" component={TimeRoute} />
             <Route component={NotFoundRoute} />
           </Switch>
         </main>

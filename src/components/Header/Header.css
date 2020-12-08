@@ -7,7 +7,8 @@ header a {
   color: #8ff100;
 }
 
-h1 {
+header h1,
+header h2 {
   margin: 0;
   padding: 0;
   text-align: center;
