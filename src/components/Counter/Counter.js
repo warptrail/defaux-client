@@ -2,35 +2,36 @@
 import React, { useState, useEffect } from 'react';
 
 function Counter() {
-  const [countZ, setcountZ] = useState(0);
-  const [count, setCount] = useState(0);
+  const [countA, setCountA] = useState(0);
+  const [countB, setCountB] = useState(0);
 
   useEffect(() => {
-    console.log('count 1', countZ);
-  }, [countZ]);
+    console.log('count A', countA);
+  }, [countA]);
+
   useEffect(() => {
-    console.log('count 2', count);
-  }, [count]);
+    console.log('count B', countB);
+  }, [countB]);
 
   return (
     <div>
       <h3>Let us Count the ways</h3>
       <div className="counter">
-        <div className="time">{countZ}</div>
-        <div className="time">{count}</div>
+        <div className="time">{countA}</div>
+        <div className="time">{countB}</div>
         <button
           onClick={() => {
-            setcountZ(countZ + 1);
+            setCountA(countA + 1);
           }}
         >
-          Count 1
+          Count A
         </button>
         <button
           onClick={() => {
-            setCount(count + 1);
+            setCountB(countB + 1);
           }}
         >
-          Count 2
+          Count B
         </button>
       </div>
     </div>
