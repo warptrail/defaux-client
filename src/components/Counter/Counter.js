@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect } from 'react';
 
 function Counter() {
