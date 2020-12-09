@@ -26,9 +26,15 @@ header h2 {
 header nav ul {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 header nav ul li {
   padding: 10px 20px;
   list-style: none;
+}
+
+.secondary_nav {
+  background-color: black;
+  color: yellow;
 }

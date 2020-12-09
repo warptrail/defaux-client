@@ -69,6 +69,18 @@ class Header extends Component {
             </li>
           </ul>
         </nav>
+        <nav className="secondary_nav">
+          <ul>
+            <li>Unit Converter</li>
+            <li>Bookmarks</li>
+            <li>User Profile</li>
+            <li>Other Users</li>
+            <li>Todo List</li>
+            <li>Blog</li>
+            <li>Things</li>
+            <li>Shop</li>
+          </ul>
+        </nav>
         <Counter />
       </header>
     );
