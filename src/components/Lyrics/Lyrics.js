@@ -11,7 +11,7 @@ const Lyrics = () => {
   const lyricsFunction = async () => {
     try {
       setLoading(true);
-      const data = await axios
+      await axios
         .get('https://api.lyrics.ovh/v1/Eminem/Godzilla')
         .then((res) => {
           console.log(res);

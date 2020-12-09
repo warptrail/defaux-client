@@ -67,6 +67,9 @@ class Header extends Component {
             <li>
               <Link to="/time">Time</Link>
             </li>
+            <li>
+              <Link to="/effect">Effect</Link>
+            </li>
           </ul>
         </nav>
         <nav className="secondary_nav">

@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import AuthApiService from '../../services/auth-api-service';
 import UserContext from '../../contexts/UserContext';
 
+import { BarLoader, BounceLoader } from 'react-spinners';
+import { css } from '@emotion/core';
+
 import './LoginForm.css';
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+`;
 
 class LoginForm extends Component {
   static defaultProps = {
@@ -42,7 +50,7 @@ class LoginForm extends Component {
       });
   };
 
-  render() {
+  renderForm = () => {
     const { error } = this.state;
     return (
       <form className="LoginForm" onSubmit={this.handleSubmit}>
@@ -68,8 +76,23 @@ class LoginForm extends Component {
           />
         </div>
         <button type="submit">Login</button>
-        {this.state.loading ? <p>Loading</p> : <p>Not Loading</p>}
       </form>
+    );
+  };
+
+  render() {
+    return (
+      <>
+        {this.state.loading ? (
+          <BounceLoader
+            css={override}
+            color={'green'}
+            loading={this.state.loading}
+          />
+        ) : (
+          this.renderForm()
+        )}
+      </>
     );
   }
 }
