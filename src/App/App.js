@@ -13,6 +13,7 @@ import TimeRoute from '../routes/TimeRoute/TimeRoute';
 import CalendarRoute from '../routes/CalendarRoute/CalendarRoute';
 import MusicRoute from '../routes/MusicRoute/MusicRoute';
 import EffectRoute from '../routes/EffectRoute/EffectRoute';
+import MoshRoute from '../routes/MoshRoute/MoshRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
 import './App.css';
 
@@ -45,6 +46,7 @@ export default class App extends Component {
             <Route exact path="/music" component={MusicRoute} />
             <Route exact path="/time" component={TimeRoute} />
             <Route exact path="/effect" component={EffectRoute} />
+            <Route exact path="/mosh" component={MoshRoute} />
             <Route component={NotFoundRoute} />
           </Switch>
         </main>

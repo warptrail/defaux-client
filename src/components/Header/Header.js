@@ -68,6 +68,9 @@ class Header extends Component {
             <li>
               <Link to="/effect">Effect</Link>
             </li>
+            <li>
+              <Link to="/mosh">Mosh</Link>
+            </li>
           </ul>
         </nav>
         <nav className="secondary_nav">
