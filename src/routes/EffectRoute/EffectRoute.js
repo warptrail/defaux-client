@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+
 const lib = [
   'cool',
   'fast',
@@ -25,7 +28,7 @@ function EffectRoute() {
       const interval = setInterval(() => {
         setArr([...arr, Math.floor(Math.random() * 100)]);
       }, 50);
-      // console.log(arr);
+
       return () => clearInterval(interval);
     }
     return undefined;
@@ -43,9 +46,23 @@ function EffectRoute() {
     return undefined;
   }, [lir]);
 
+  const renderCoffees = () => {
+    let c = count;
+    let arrayOfIcons = [];
+    for (let i = 0; i < c; i++) {
+      arrayOfIcons.push(<FontAwesomeIcon key={i} icon={faCoffee} />);
+    }
+    return arrayOfIcons;
+  };
+
+  renderCoffees();
   return (
     <div>
       <h3>The Effects of Time</h3>
+      <div>
+        <p>coffee</p>
+        {renderCoffees()}
+      </div>
       {lir.map((l, i) => (
         <span key={i}>{l}</span>
       ))}
