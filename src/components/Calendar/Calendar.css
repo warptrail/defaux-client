@@ -8,3 +8,19 @@
   font-size: 80px;
   text-align: center;
 }
+
+.calendar-box {
+  background-color: black;
+  height: 400px;
+}
+
+.calendar-box table {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.calendar-box table tr td {
+  padding: 10px;
+  border-bottom: 1px solid yellow;
+}
