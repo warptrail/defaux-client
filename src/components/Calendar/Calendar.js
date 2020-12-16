@@ -53,17 +53,28 @@ function Calendar() {
     });
   };
 
-  const populateWeeks = () => {
-    const week = [];
-    for (let w = 0; w < 6; w++) {
-      week.push(dayjs(dateObject).add(w, 'day'));
-    }
-    return week;
-  };
+  // const populateWeeks = () => {
+  //   const week = [];
+  //   for (let w = 0; w < 6; w++) {
+  //     week.push(dayjs(dateObject).add(w, 'day'));
+  //   }
+  //   return week;
+  // };
 
   // Highlight the current day
   const currentDay = () => {
     return dateObject.format('D');
+  };
+
+  // Month picker
+
+  const month = () => {
+    return dateObject.format('MMMM');
+  };
+
+  // Year picker
+  const year = () => {
+    return dateObject.format('YYYY');
   };
 
   // make array of calendar days blank and filled with days in the month
@@ -79,10 +90,12 @@ function Calendar() {
   let daysInMonth = [];
   const getDaysInMonth = dayjs(dateObject).daysInMonth();
 
+  let currentDate = dayjs().format('MYYYYD');
+
   for (let d = 1; d <= getDaysInMonth; d++) {
     let isToday = d == currentDay() ? 'today' : '';
     daysInMonth.push(
-      <td key={d} className="calendar-day">
+      <td key={d} className={`calendar-day ${isToday}`}>
         {d}
       </td>
     );
@@ -112,7 +125,16 @@ function Calendar() {
     return <tr key={i}>{d}</tr>;
   });
 
-  console.log(populateWeeks());
+  // month navigation
+  const nextMonth = () => {
+    setDateObject(dayjs(dateObject).add(1, 'month'));
+  };
+
+  const prevMonth = () => {
+    setDateObject(dayjs(dateObject).subtract(1, 'month'));
+  };
+
+  // console.log(populateWeeks());
   console.log(firstDayOfMonth());
   console.log(dateObject);
   console.log(blanks);
@@ -134,6 +156,18 @@ function Calendar() {
       <p>Last day of the month view is: {'to be determined'}</p>
 
       <div className="calendar-box">
+        <div className="tail-datetime-calendar">
+          <div className="month-name">{month()}</div>
+          <div className="year-name">{year()}</div>
+          <div className="month-navigation">
+            <button type="button" onClick={prevMonth}>
+              prev
+            </button>
+            <button type="button" onClick={nextMonth}>
+              next
+            </button>
+          </div>
+        </div>
         <table className="calendar-day">
           <thead>
             <tr>{populateCalendarDaysOfWeek()}</tr>
