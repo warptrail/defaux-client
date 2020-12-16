@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 import './Calendar.css';
-import { isCompositeComponent } from 'react-dom/test-utils';
 
 dayjs.extend(weekday);
 dayjs.extend(updateLocale);
@@ -23,14 +22,15 @@ dayjs.updateLocale('en', {
 
 function Calendar() {
   const date = '2020-10-25T2:33:00';
-  const [dateObject, setDateObject] = useState(dayjs(date));
+  const [dateObject, setDateObject] = useState(dayjs());
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
   // Build the Calendar with Mosh
   const firstDayOfMonth = () => {
     const firstDay = dayjs(dateObject).startOf('month').format('d');
-    return firstDay;
+    console.log('firstDay: ', firstDay - 1);
+    return firstDay - 1;
   };
 
   // Merged Month Calendar View
@@ -56,21 +56,31 @@ function Calendar() {
   const populateWeeks = () => {
     const week = [];
     for (let w = 0; w < 6; w++) {
-      week.push(dayjs(date).add(w, 'day'));
+      week.push(dayjs(dateObject).add(w, 'day'));
     }
     return week;
+  };
+
+  // Highlight the current day
+  const currentDay = () => {
+    return dateObject.format('D');
   };
 
   // make array of calendar days blank and filled with days in the month
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth(); i++) {
-    blanks.push(<td className="calendar-day-empty">{''}</td>);
+    blanks.push(
+      <td key={i + 1000} className="calendar-day-empty">
+        {''}
+      </td>
+    );
   }
 
   let daysInMonth = [];
   const getDaysInMonth = dayjs(dateObject).daysInMonth();
 
   for (let d = 1; d <= getDaysInMonth; d++) {
+    let isToday = d == currentDay() ? 'today' : '';
     daysInMonth.push(
       <td key={d} className="calendar-day">
         {d}
@@ -78,12 +88,39 @@ function Calendar() {
     );
   }
 
-  // Now we have all <td> elements for the days in the month
+  // combine blanks with daysInMonth
+  const totalSlots = [...blanks, ...daysInMonth];
+  let rows = [];
+  let cells = [];
+
+  // Now we have all <td> elements for the days in the
+  // month we can make an array of arrays
+  totalSlots.forEach((row, i) => {
+    if (i % 7 !== 0) {
+      cells.push(row); // if index not equal 7 that means not go to next week
+    } else {
+      rows.push(cells);
+      cells = [];
+      cells.push(row);
+    }
+    if (i === totalSlots.length - 1) {
+      rows.push(cells);
+    }
+  });
+
+  let calendarDays = rows.map((d, i) => {
+    return <tr key={i}>{d}</tr>;
+  });
 
   console.log(populateWeeks());
+  console.log(firstDayOfMonth());
   console.log(dateObject);
   console.log(blanks);
   console.log(daysInMonth);
+  console.log(cells);
+  console.log(rows);
+  console.log(calendarDays);
+  console.log(currentDay());
 
   return (
     <div>
@@ -97,10 +134,11 @@ function Calendar() {
       <p>Last day of the month view is: {'to be determined'}</p>
 
       <div className="calendar-box">
-        <table>
+        <table className="calendar-day">
           <thead>
             <tr>{populateCalendarDaysOfWeek()}</tr>
           </thead>
+          <tbody>{calendarDays}</tbody>
         </table>
       </div>
     </div>
