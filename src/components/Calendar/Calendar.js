@@ -1,8 +1,10 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 import React, { useState } from 'react';
 import DayJS from 'react-dayjs';
 import dayjs from 'dayjs';
+import enLocale from 'dayjs/locale/en';
 import weekday from 'dayjs/plugin/weekday';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import updateLocale from 'dayjs/plugin/updateLocale';
@@ -12,6 +14,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 import './Calendar.css';
 
+dayjs.locale('en');
 dayjs.extend(weekday);
 dayjs.extend(updateLocale);
 dayjs.extend(isoWeekday);
@@ -23,14 +26,19 @@ dayjs.updateLocale('en', {
 function Calendar() {
   const date = '2020-10-25T2:33:00';
   const [dateObject, setDateObject] = useState(dayjs());
+  const [allMonths, setAllMonths] = useState(dayjs().month());
+  console.log(allMonths);
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
   // Build the Calendar with Mosh
   const firstDayOfMonth = () => {
-    const firstDay = dayjs(dateObject).startOf('month').format('d');
-    console.log('firstDay: ', firstDay - 1);
-    return firstDay - 1;
+    const firstDay = dayjs(dateObject)
+      .locale(enLocale)
+      .startOf('month')
+      .format('d');
+    console.log('firstDay: ', firstDay);
+    return firstDay;
   };
 
   // Merged Month Calendar View
@@ -52,6 +60,16 @@ function Calendar() {
       return <td key={day}>{day}</td>;
     });
   };
+
+  const populateMonthPickerNames = () => {
+    const monthsOfTheYear = [];
+    for (let i = 0; i <= 11; i++) {
+      monthsOfTheYear.push(dayjs().month(i));
+    }
+    return monthsOfTheYear;
+  };
+
+  console.log(populateMonthPickerNames());
 
   // const populateWeeks = () => {
   //   const week = [];
@@ -134,6 +152,10 @@ function Calendar() {
     setDateObject(dayjs(dateObject).subtract(1, 'month'));
   };
 
+  const backToToday = () => {
+    setDateObject(dayjs());
+  };
+
   // console.log(populateWeeks());
   console.log(firstDayOfMonth());
   console.log(dateObject);
@@ -162,6 +184,9 @@ function Calendar() {
           <div className="month-navigation">
             <button type="button" onClick={prevMonth}>
               prev
+            </button>
+            <button type="button" onClick={backToToday}>
+              Today
             </button>
             <button type="button" onClick={nextMonth}>
               next
