@@ -1,65 +1,52 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 import React, { useState } from 'react';
-import DayJS from 'react-dayjs';
+
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import updateLocale from 'dayjs/plugin/updateLocale';
+
+import 'dayjs/locale/en';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 import './Calendar.css';
 
-dayjs.extend(weekday);
 dayjs.extend(updateLocale);
+dayjs.extend(weekday);
 dayjs.extend(isoWeekday);
 
 dayjs.updateLocale('en', {
   weekStart: 1
 });
+dayjs.locale('en');
 
 function Calendar() {
-  const date = '2020-10-25T2:33:00';
-  const [dateObject, setDateObject] = useState(dayjs());
+  const [dateObject, setDateObject] = useState(dayjs().locale('en'));
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
   // Build the Calendar with Mosh
   const firstDayOfMonth = () => {
-    const firstDay = dayjs(dateObject).startOf('month').format('d');
-    console.log('firstDay: ', firstDay - 1);
-    return firstDay - 1;
+    const firstDay = dateObject.startOf('month').weekday();
+    console.log(firstDay);
+    return firstDay;
   };
-
-  // Merged Month Calendar View
-  // const firstDayOfMonth = dayjs(date)
-  //   .startOf('month')
-  //   .startOf('week')
-  //   .format('ddd MM-DD-YYYY');
-  // const lastDayOfMonth = dayjs(date)
-  //   .endOf('month')
-  //   .endOf('week')
-  //   .format('ddd MM-DD-YYYY');
 
   const populateCalendarDaysOfWeek = () => {
     const daysOfTheWeek = [];
+
+    console.log(dateObject.startOf('month').weekday(0));
     for (let i = 0; i <= 6; i++) {
       daysOfTheWeek.push(dayjs().weekday(i).format('dddd'));
     }
+    console.log(dayjs());
     return daysOfTheWeek.map((day) => {
       return <td key={day}>{day}</td>;
     });
   };
-
-  // const populateWeeks = () => {
-  //   const week = [];
-  //   for (let w = 0; w < 6; w++) {
-  //     week.push(dayjs(dateObject).add(w, 'day'));
-  //   }
-  //   return week;
-  // };
 
   // Highlight the current day
   const currentDay = () => {
@@ -88,9 +75,7 @@ function Calendar() {
   }
 
   let daysInMonth = [];
-  const getDaysInMonth = dayjs(dateObject).daysInMonth();
-
-  let currentDate = dayjs().format('MYYYYD');
+  const getDaysInMonth = dateObject.daysInMonth();
 
   for (let d = 1; d <= getDaysInMonth; d++) {
     let isToday = d == currentDay() ? 'today' : '';
@@ -127,11 +112,11 @@ function Calendar() {
 
   // month navigation
   const nextMonth = () => {
-    setDateObject(dayjs(dateObject).add(1, 'month'));
+    setDateObject(dateObject.add(1, 'month'));
   };
 
   const prevMonth = () => {
-    setDateObject(dayjs(dateObject).subtract(1, 'month'));
+    setDateObject(dateObject.subtract(1, 'month'));
   };
 
   // console.log(populateWeeks());
@@ -148,9 +133,6 @@ function Calendar() {
     <div>
       <h2>the endless march of time</h2>
       <div className="icon">{coffeeIcon}</div>
-      <DayJS format="MM-DD-YYYY">{date}</DayJS>
-      <br />
-      <DayJS format="YYYY">{date}</DayJS>
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
