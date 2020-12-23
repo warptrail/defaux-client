@@ -44,3 +44,7 @@
   justify-content: space-between;
   margin: 0 20%;
 }
+
+.month-picker {
+  background-color: navy;
+}

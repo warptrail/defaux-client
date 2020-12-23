@@ -12,6 +12,8 @@ import 'dayjs/locale/en';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
+import MonthPicker from './MonthPicker';
+
 import './Calendar.css';
 
 dayjs.extend(updateLocale);
@@ -38,11 +40,10 @@ function Calendar() {
   const populateCalendarDaysOfWeek = () => {
     const daysOfTheWeek = [];
 
-    console.log(dateObject.startOf('month').weekday(0));
     for (let i = 0; i <= 6; i++) {
       daysOfTheWeek.push(dayjs().weekday(i).format('dddd'));
     }
-    console.log(dayjs());
+
     return daysOfTheWeek.map((day) => {
       return <td key={day}>{day}</td>;
     });
@@ -110,13 +111,66 @@ function Calendar() {
     return <tr key={i}>{d}</tr>;
   });
 
-  // month navigation
+  // * month navigation
   const nextMonth = () => {
     setDateObject(dateObject.add(1, 'month'));
   };
 
   const prevMonth = () => {
     setDateObject(dateObject.subtract(1, 'month'));
+  };
+
+  // * month picker
+  const arrayOfMonthNames = () => {
+    const epoch = '1970-01-01';
+    let monthNames = [];
+
+    // Makes an array of each month name
+    for (let i = 0; i < 12; i++) {
+      monthNames.push(dayjs(epoch).add(i, 'month').format('MMMM'));
+    }
+    return monthNames;
+  };
+
+  const MonthList = (monthNames) => {
+    let months = [];
+
+    monthNames.map((month) => {
+      months.push(
+        <td>
+          <span>{month}</span>
+        </td>
+      );
+    });
+
+    let rows = [];
+    let cells = [];
+
+    months.forEach((row, i) => {
+      if (i % 3 !== 0 || i === 0) {
+        cells.push(row);
+      } else {
+        rows.push(cells);
+        cells = [];
+        cells.push(row);
+      }
+    });
+    rows.push(cells); // add last row
+
+    let monthlist = rows.map((d, i) => {
+      return <tr>{d}</tr>;
+    });
+
+    return (
+      <table className="calendar-month">
+        <thead>
+          <tr>
+            <th colSpan="4">Select a Month</th>
+          </tr>
+        </thead>
+        <tbody>{monthlist}</tbody>
+      </table>
+    );
   };
 
   // console.log(populateWeeks());
@@ -136,6 +190,10 @@ function Calendar() {
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
+
+      <MonthPicker />
+
+      <div>{MonthList(arrayOfMonthNames())}</div>
 
       <div className="calendar-box">
         <div className="tail-datetime-calendar">
