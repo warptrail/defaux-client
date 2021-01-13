@@ -137,7 +137,7 @@ function Calendar() {
 
     monthNames.map((month) => {
       months.push(
-        <td>
+        <td key={month}>
           <span>{month}</span>
         </td>
       );
@@ -157,8 +157,8 @@ function Calendar() {
     });
     rows.push(cells); // add last row
 
-    let monthlist = rows.map((d, i) => {
-      return <tr>{d}</tr>;
+    let monthlist = rows.map((m, i) => {
+      return <tr key={i}>{m}</tr>;
     });
 
     return (
@@ -191,9 +191,7 @@ function Calendar() {
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
 
-      <MonthPicker />
-
-      <div>{MonthList(arrayOfMonthNames())}</div>
+      <div className="month-picker">{MonthList(arrayOfMonthNames())}</div>
 
       <div className="calendar-box">
         <div className="tail-datetime-calendar">

@@ -47,4 +47,16 @@
 
 .month-picker {
   background-color: navy;
+  display: flex;
+  justify-content: center;
+}
+
+.month-picker table {
+  width: 100%;
+}
+
+.month-picker table td {
+  border: 1px solid rgb(14, 216, 199);
+  padding: 10px;
+  text-align: center;
 }

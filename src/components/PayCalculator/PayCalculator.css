@@ -1,0 +1,24 @@
+.pay_form {
+  display: flex;
+  flex-direction: column;
+}
+
+.pay_form input {
+  width: 80px;
+}
+
+.notes {
+  padding: 30px;
+  width: 800px;
+  border: 1px solid #1c78a0;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.notes a {
+  color: #1c78a0;
+}
+
+.notes a:hover {
+  color: #a01c96;
+}
