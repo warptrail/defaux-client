@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-shadow */
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 import React, { useState } from 'react';
@@ -15,6 +17,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import MonthPicker from './MonthPicker';
 
 import './Calendar.css';
+import { setDate } from 'date-fns';
 
 dayjs.extend(updateLocale);
 dayjs.extend(weekday);
@@ -51,7 +54,9 @@ function Calendar() {
 
   // Highlight the current day
   const currentDay = () => {
-    return dateObject.format('D');
+    if (dateObject.format('MYYYY') === dayjs().format('MYYYY')) {
+      return dateObject.format('D');
+    }
   };
 
   // Month picker
@@ -137,7 +142,13 @@ function Calendar() {
 
     monthNames.map((month) => {
       months.push(
-        <td key={month}>
+        <td
+          key={month}
+          className="calendar-month"
+          onClick={(e) => {
+            setMonth(month);
+          }}
+        >
           <span>{month}</span>
         </td>
       );
@@ -173,6 +184,16 @@ function Calendar() {
     );
   };
 
+  // Changing to a specific month
+  const setMonth = (month) => {
+    const months = arrayOfMonthNames();
+    let monthNo = months.indexOf(month);
+    let selectMonthDateObject = { ...dateObject };
+    selectMonthDateObject = dayjs().month(monthNo);
+
+    setDateObject(selectMonthDateObject);
+  };
+
   // console.log(populateWeeks());
   console.log(firstDayOfMonth());
   console.log(dateObject);
@@ -187,6 +208,7 @@ function Calendar() {
     <div>
       <h2>the endless march of time</h2>
       <div className="icon">{coffeeIcon}</div>
+      <button onClick={setMonth}>333</button>
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>

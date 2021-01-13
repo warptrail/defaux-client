@@ -85,6 +85,11 @@ function PayCalculator() {
           onChange={handleChange}
         />
       </form>
+      <div>
+        <p>
+          Your total pay is <b>${totalPay}</b>
+        </p>
+      </div>
     </div>
   );
 }
