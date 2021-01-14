@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-const */
@@ -30,6 +32,7 @@ dayjs.locale('en');
 
 function Calendar() {
   const [dateObject, setDateObject] = useState(dayjs().locale('en'));
+  const [showMonthTable, setShowMonthTable] = useState(false);
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
@@ -59,14 +62,14 @@ function Calendar() {
     }
   };
 
-  // Month picker
+  // * This month and year header display
 
-  const month = () => {
+  const printThisMonthHeader = () => {
     return dateObject.format('MMMM');
   };
 
   // Year picker
-  const year = () => {
+  const printThisYearHeader = () => {
     return dateObject.format('YYYY');
   };
 
@@ -137,6 +140,18 @@ function Calendar() {
     return monthNames;
   };
 
+  // Changing to a specific month
+  const setMonth = (month) => {
+    let selectedYear = dayjs(dateObject).format('YYYY');
+    const months = arrayOfMonthNames();
+    let monthNo = months.indexOf(month);
+    let selectMonthDateObject = { ...dateObject };
+    //selectMonthDateObject = dayjs().month(monthNo).year(selectedYear);
+
+    setDateObject(dayjs().month(monthNo).year(selectedYear));
+    setShowMonthTable(!showMonthTable);
+  };
+
   const MonthList = (monthNames) => {
     let months = [];
 
@@ -184,14 +199,9 @@ function Calendar() {
     );
   };
 
-  // Changing to a specific month
-  const setMonth = (month) => {
-    const months = arrayOfMonthNames();
-    let monthNo = months.indexOf(month);
-    let selectMonthDateObject = { ...dateObject };
-    selectMonthDateObject = dayjs().month(monthNo);
-
-    setDateObject(selectMonthDateObject);
+  // toggle show month picker
+  const showMonthPicker = (e, month) => {
+    setShowMonthTable(!showMonthTable);
   };
 
   // console.log(populateWeeks());
@@ -208,17 +218,28 @@ function Calendar() {
     <div>
       <h2>the endless march of time</h2>
       <div className="icon">{coffeeIcon}</div>
-      <button onClick={setMonth}>333</button>
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
 
-      <div className="month-picker">{MonthList(arrayOfMonthNames())}</div>
-
       <div className="calendar-box">
         <div className="tail-datetime-calendar">
-          <div className="month-name">{month()}</div>
-          <div className="year-name">{year()}</div>
+          <div
+            className="month-name"
+            onClick={(e) => {
+              showMonthPicker();
+            }}
+          >
+            <h3>{printThisMonthHeader()}</h3>
+          </div>
+          <div className="month-picker">
+            {showMonthTable && MonthList(arrayOfMonthNames())}
+          </div>
+          <div className="year-name">
+            <button>Past</button>
+            <h3>{printThisYearHeader()}</h3>
+            <button>Future</button>
+          </div>
           <div className="month-navigation">
             <button type="button" onClick={prevMonth}>
               prev
