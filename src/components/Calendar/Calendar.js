@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
@@ -19,7 +22,6 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import MonthPicker from './MonthPicker';
 
 import './Calendar.css';
-import { setDate } from 'date-fns';
 
 dayjs.extend(updateLocale);
 dayjs.extend(weekday);
@@ -33,6 +35,8 @@ dayjs.locale('en');
 function Calendar() {
   const [dateObject, setDateObject] = useState(dayjs().locale('en'));
   const [showMonthTable, setShowMonthTable] = useState(false);
+  const [showYearSelector, setShowYearSelector] = useState(false);
+  const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
@@ -65,12 +69,12 @@ function Calendar() {
   // * This month and year header display
 
   const printThisMonthHeader = () => {
-    return dateObject.format('MMMM');
+    return <h3>{dateObject.format('MMMM')}</h3>;
   };
 
   // Year picker
   const printThisYearHeader = () => {
-    return dateObject.format('YYYY');
+    return <h3 onClick={showYearPicker}>{dateObject.format('YYYY')}</h3>;
   };
 
   // make array of calendar days blank and filled with days in the month
@@ -128,6 +132,15 @@ function Calendar() {
     setDateObject(dateObject.subtract(1, 'month'));
   };
 
+  // * year navigation
+  const nextYear = () => {
+    setDateObject(dateObject.add(1, 'year'));
+  };
+
+  const prevYear = () => {
+    setDateObject(dateObject.subtract(1, 'year'));
+  };
+
   // * month picker
   const arrayOfMonthNames = () => {
     const epoch = '1970-01-01';
@@ -145,11 +158,19 @@ function Calendar() {
     let selectedYear = dayjs(dateObject).format('YYYY');
     const months = arrayOfMonthNames();
     let monthNo = months.indexOf(month);
-    let selectMonthDateObject = { ...dateObject };
-    //selectMonthDateObject = dayjs().month(monthNo).year(selectedYear);
 
     setDateObject(dayjs().month(monthNo).year(selectedYear));
     setShowMonthTable(!showMonthTable);
+  };
+
+  const setYear = (year) => {
+    let selectedYear = dayjs(dateObject).format('YYYY');
+    let selectedMonth = dayjs(dateObject).format('MMMM');
+    const months = arrayOfMonthNames();
+    let monthNo = months.indexOf(selectedMonth);
+
+    setDateObject(dayjs().month(monthNo).year(year));
+    console.log(selectedYear, year); // 2021
   };
 
   const MonthList = (monthNames) => {
@@ -199,9 +220,14 @@ function Calendar() {
     );
   };
 
-  // toggle show month picker
+  // * toggle show month picker
   const showMonthPicker = (e, month) => {
     setShowMonthTable(!showMonthTable);
+  };
+
+  // * toggle show year picker
+  const showYearPicker = (e, year) => {
+    setShowYearSelector(!showYearSelector);
   };
 
   // console.log(populateWeeks());
@@ -214,9 +240,44 @@ function Calendar() {
   console.log(calendarDays);
   console.log(currentDay());
 
+  const handleYearChange = (e) => {
+    const { value } = e.target;
+    setGoToYear(value);
+  };
+
+  const goToChangedYear = (e, year) => {
+    e.preventDefault();
+
+    setGoToYear(dayjs(dateObject).year(year));
+    setDateObject(dayjs().year(goToYear));
+    setShowYearSelector(false);
+  };
+
+  const yearInput = () => {
+    const dateObjectYear = dayjs(dateObject).format('YYYY');
+    return (
+      <form className="change_year_form" onSubmit={goToChangedYear}>
+        <input
+          className="year_input"
+          type="number"
+          defaultValue={dateObjectYear}
+          onChange={handleYearChange}
+        />
+        <button>Go</button>
+      </form>
+    );
+  };
+
   return (
     <div>
       <h2>the endless march of time</h2>
+      <button
+        onClick={() => {
+          setYear(1996);
+        }}
+      >
+        What Year is it?
+      </button>
       <div className="icon">{coffeeIcon}</div>
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
@@ -230,24 +291,29 @@ function Calendar() {
               showMonthPicker();
             }}
           >
-            <h3>{printThisMonthHeader()}</h3>
+            <button type="button" onClick={prevMonth}>
+              Previous Month
+            </button>
+            {printThisMonthHeader()}
+            <button type="button" onClick={nextMonth}>
+              Next Month
+            </button>
           </div>
           <div className="month-picker">
             {showMonthTable && MonthList(arrayOfMonthNames())}
           </div>
+          {/* * * * * * */}
           <div className="year-name">
-            <button>Past</button>
-            <h3>{printThisYearHeader()}</h3>
-            <button>Future</button>
-          </div>
-          <div className="month-navigation">
-            <button type="button" onClick={prevMonth}>
-              prev
+            <button type="button" onClick={prevYear}>
+              Past
             </button>
-            <button type="button" onClick={nextMonth}>
-              next
+            {!showYearSelector && printThisYearHeader()}
+            {showYearSelector && yearInput()}
+            <button type="button" onClick={nextYear}>
+              Future
             </button>
           </div>
+          {/* * * * * * */}
         </div>
         <table className="calendar-day">
           <thead>
