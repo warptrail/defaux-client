@@ -77,3 +77,11 @@
   width: 200px;
   padding: 30px;
 }
+
+.previous_button:before {
+  content: '<<';
+}
+
+.next_button:before {
+  content: '>>';
+}

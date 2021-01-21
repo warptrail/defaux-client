@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-use-before-define */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/button-has-type */
@@ -33,17 +35,25 @@ dayjs.updateLocale('en', {
 dayjs.locale('en');
 
 function Calendar() {
+  // * Highlight the current day
+  const currentDay = () => {
+    if (dateObject.format('MYYYY') === dayjs().format('MYYYY')) {
+      return Number(dateObject.format('D'));
+    }
+  };
+
+  //* State
   const [dateObject, setDateObject] = useState(dayjs().locale('en'));
   const [showMonthTable, setShowMonthTable] = useState(false);
   const [showYearSelector, setShowYearSelector] = useState(false);
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
+  const [selectedDay, setSelectedDay] = useState(dayjs().format('D'));
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
   // Build the Calendar with Mosh
   const firstDayOfMonth = () => {
     const firstDay = dateObject.startOf('month').weekday();
-    console.log(firstDay);
     return firstDay;
   };
 
@@ -59,20 +69,21 @@ function Calendar() {
     });
   };
 
-  // Highlight the current day
-  const currentDay = () => {
-    if (dateObject.format('MYYYY') === dayjs().format('MYYYY')) {
-      return dateObject.format('D');
-    }
-  };
-
   // * This month and year header display
 
   const printThisMonthHeader = () => {
-    return <h3>{dateObject.format('MMMM')}</h3>;
+    return (
+      <h3
+        onClick={(e) => {
+          showMonthPicker();
+        }}
+      >
+        {dateObject.format('MMMM')}
+      </h3>
+    );
   };
 
-  // Year picker
+  // * Year picker
   const printThisYearHeader = () => {
     return <h3 onClick={showYearPicker}>{dateObject.format('YYYY')}</h3>;
   };
@@ -93,8 +104,19 @@ function Calendar() {
   for (let d = 1; d <= getDaysInMonth; d++) {
     let isToday = d == currentDay() ? 'today' : '';
     daysInMonth.push(
-      <td key={d} className={`calendar-day ${isToday}`}>
-        {d}
+      <td
+        key={d}
+        id={`${dateObject.format('M')}-${d}-${dateObject.format('YYYY')}`}
+        className={`calendar-day ${isToday}`}
+      >
+        <span
+          name={d}
+          onClick={(e) => {
+            onDayClick(e);
+          }}
+        >
+          {d}
+        </span>
       </td>
     );
   }
@@ -230,16 +252,6 @@ function Calendar() {
     setShowYearSelector(!showYearSelector);
   };
 
-  // console.log(populateWeeks());
-  console.log(firstDayOfMonth());
-  console.log(dateObject);
-  console.log(blanks);
-  console.log(daysInMonth);
-  console.log(cells);
-  console.log(rows);
-  console.log(calendarDays);
-  console.log(currentDay());
-
   const handleYearChange = (e) => {
     const { value } = e.target;
     setGoToYear(value);
@@ -268,16 +280,28 @@ function Calendar() {
     );
   };
 
+  // * Grab the selected cell
+
+  const onDayClick = (e) => {
+    const selectDay = e.target.getAttribute('name');
+    setSelectedDay(selectDay);
+    console.log(selectedDay);
+    console.log('SELECTED DAY: ', selectedDay);
+  };
+
+  // ? Testing and Return
+  // console.log(firstDayOfMonth());
+  // console.log(dateObject);
+  // console.log(blanks);
+  // console.log(daysInMonth);
+  // console.log(cells);
+  // console.log(rows);
+  // console.log(calendarDays);
+  // console.log(currentDay());
+
   return (
     <div>
       <h2>the endless march of time</h2>
-      <button
-        onClick={() => {
-          setYear(1996);
-        }}
-      >
-        What Year is it?
-      </button>
       <div className="icon">{coffeeIcon}</div>
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
@@ -285,37 +309,46 @@ function Calendar() {
 
       <div className="calendar-box">
         <div className="tail-datetime-calendar">
-          <div
-            className="month-name"
-            onClick={(e) => {
-              showMonthPicker();
-            }}
-          >
-            <button type="button" onClick={prevMonth}>
-              Previous Month
+          <div className="month-name">
+            <button
+              type="button"
+              onClick={prevMonth}
+              name="previousMonthButton"
+              className="previous_button"
+            >
+              {' '}
             </button>
             {printThisMonthHeader()}
-            <button type="button" onClick={nextMonth}>
-              Next Month
-            </button>
+            <button
+              type="button"
+              onClick={nextMonth}
+              className="next_button"
+              name="nextYearButton"
+            />
           </div>
           <div className="month-picker">
             {showMonthTable && MonthList(arrayOfMonthNames())}
           </div>
           {/* * * * * * */}
           <div className="year-name">
-            <button type="button" onClick={prevYear}>
-              Past
-            </button>
+            <button
+              type="button"
+              onClick={prevYear}
+              name="nextMonthButton"
+              className="previous_button"
+            />
             {!showYearSelector && printThisYearHeader()}
             {showYearSelector && yearInput()}
-            <button type="button" onClick={nextYear}>
-              Future
-            </button>
+            <button
+              type="button"
+              onClick={nextYear}
+              name="nextMonthButton"
+              className="next_button"
+            />
           </div>
           {/* * * * * * */}
         </div>
-        <table className="calendar-day">
+        <table>
           <thead>
             <tr>{populateCalendarDaysOfWeek()}</tr>
           </thead>
