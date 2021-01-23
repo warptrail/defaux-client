@@ -21,8 +21,6 @@ import 'dayjs/locale/en';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-import MonthPicker from './MonthPicker';
-
 import './Calendar.css';
 
 dayjs.extend(updateLocale);
@@ -47,7 +45,7 @@ function Calendar() {
   const [showMonthTable, setShowMonthTable] = useState(false);
   const [showYearSelector, setShowYearSelector] = useState(false);
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
-  const [selectedDay, setSelectedDay] = useState(dayjs().format('D'));
+  const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
@@ -103,20 +101,28 @@ function Calendar() {
 
   for (let d = 1; d <= getDaysInMonth; d++) {
     let isToday = d == currentDay() ? 'today' : '';
+
+    let dateObjectMonth = dateObject.format('MM');
+    let dateObjectYear = dateObject.format('YYYY');
+
+    const compiledDateString = `${dateObjectYear}-${dateObjectMonth}-${d}`;
+
+    let allTheDates = dayjs(compiledDateString);
+
+    let isSelected =
+      allTheDates.format('YYYY-MM-DD') == selectedDay ? 'selected' : '';
+
     daysInMonth.push(
       <td
         key={d}
-        id={`${dateObject.format('M')}-${d}-${dateObject.format('YYYY')}`}
-        className={`calendar-day ${isToday}`}
+        id={allTheDates.format('YYYY-MM-DD')}
+        name={allTheDates.format('YYYY-MM-DD')}
+        className={`calendar-day ${isToday} ${isSelected}`}
+        onClick={(e) => {
+          onDayClick(e);
+        }}
       >
-        <span
-          name={d}
-          onClick={(e) => {
-            onDayClick(e);
-          }}
-        >
-          {d}
-        </span>
+        <span name={d}>{d}</span>
       </td>
     );
   }
@@ -163,7 +169,7 @@ function Calendar() {
     setDateObject(dateObject.subtract(1, 'year'));
   };
 
-  // * month picker
+  // * Changing to a specific month & year
   const arrayOfMonthNames = () => {
     const epoch = '1970-01-01';
     let monthNames = [];
@@ -175,7 +181,6 @@ function Calendar() {
     return monthNames;
   };
 
-  // Changing to a specific month
   const setMonth = (month) => {
     let selectedYear = dayjs(dateObject).format('YYYY');
     const months = arrayOfMonthNames();
@@ -195,6 +200,7 @@ function Calendar() {
     console.log(selectedYear, year); // 2021
   };
 
+  // * The table of month names to select
   const MonthList = (monthNames) => {
     let months = [];
 
@@ -260,7 +266,7 @@ function Calendar() {
   const goToChangedYear = (e, year) => {
     e.preventDefault();
 
-    setGoToYear(dayjs(dateObject).year(year));
+    //setGoToYear(dayjs(dateObject).year(year));
     setDateObject(dayjs().year(goToYear));
     setShowYearSelector(false);
   };
@@ -280,13 +286,16 @@ function Calendar() {
     );
   };
 
-  // * Grab the selected cell
+  // * Grab the selected day
 
   const onDayClick = (e) => {
     const selectDay = e.target.getAttribute('name');
     setSelectedDay(selectDay);
-    console.log(selectedDay);
-    console.log('SELECTED DAY: ', selectedDay);
+  };
+
+  // * Display the selected day
+  const displaySelectedDay = () => {
+    return <p>The selected Day is {dayjs(selectedDay).format('DD/MM/YYYY')}</p>;
   };
 
   // ? Testing and Return
@@ -298,6 +307,7 @@ function Calendar() {
   // console.log(rows);
   // console.log(calendarDays);
   // console.log(currentDay());
+  console.log(selectedDay);
 
   return (
     <div>
@@ -306,6 +316,7 @@ function Calendar() {
 
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
+      {displaySelectedDay()}
 
       <div className="calendar-box">
         <div className="tail-datetime-calendar">

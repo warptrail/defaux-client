@@ -33,6 +33,11 @@
   background-color: rgb(39, 21, 14);
 }
 
+.selected {
+  color: aqua;
+  background-color: darkblue;
+}
+
 .month-name,
 .year-name {
   text-align: center;
