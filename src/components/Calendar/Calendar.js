@@ -43,7 +43,10 @@ function Calendar() {
   // * Sample Events
   const eventsStorage = [
     { date: '2021-01-01', info: 'First day of 2021' },
-    { date: '2021-01-02', info: 'Second day of 2021' }
+    { date: '2021-01-01', info: 'New Years Day' },
+    { date: '2021-01-02', info: 'Second day of 2021' },
+    { date: '2021-01-03', info: 'Third day of 2021' },
+    { date: '2021-01-04', info: 'Fourth day of 2021' }
   ];
 
   //* State
@@ -121,10 +124,17 @@ function Calendar() {
 
     // let event = { date: '2021-01-01', info: 'first day of 2021' };
 
-    for (let e = 0; e < events.length; e++) {
-      console.log(events[e].date);
-      console.log(d);
+    // push events from main event library if they match dateObject
+    let dailyEvents = [];
+
+    for (let i = 0; i < events.length; i++) {
+      if (events[i].date === allTheDates.format('YYYY-MM-DD')) {
+        //console.log(events[i][prop]);
+        dailyEvents.push(events[i]);
+      }
     }
+
+    console.log(dailyEvents);
 
     daysInMonth.push(
       <td
@@ -137,9 +147,17 @@ function Calendar() {
         }}
       >
         <span name={d}>{d}</span>
-        <span>
-          {/* {event.date === allTheDates.format('YYYY-MM-DD') ? event.info : ''} */}
-        </span>
+        <ul>
+          {dailyEvents.map((event) => (
+            <li
+              onClick={(e) => {
+                onDayClickChild(e);
+              }}
+            >
+              {event.info}
+            </li>
+          ))}
+        </ul>
       </td>
     );
   }
@@ -307,6 +325,13 @@ function Calendar() {
 
   const onDayClick = (e) => {
     const selectDay = e.target.getAttribute('name');
+    setSelectedDay(selectDay);
+  };
+
+  const onDayClickChild = (e) => {
+    e.stopPropagation();
+    const parent = e.target.parentElement.parentElement;
+    const selectDay = parent.getAttribute('name');
     setSelectedDay(selectDay);
   };
 
