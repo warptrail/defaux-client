@@ -40,12 +40,19 @@ function Calendar() {
     }
   };
 
+  // * Sample Events
+  const eventsStorage = [
+    { date: '2021-01-01', info: 'First day of 2021' },
+    { date: '2021-01-02', info: 'Second day of 2021' }
+  ];
+
   //* State
   const [dateObject, setDateObject] = useState(dayjs().locale('en'));
   const [showMonthTable, setShowMonthTable] = useState(false);
   const [showYearSelector, setShowYearSelector] = useState(false);
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
+  const [events, setEvents] = useState(eventsStorage);
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
@@ -112,6 +119,13 @@ function Calendar() {
     let isSelected =
       allTheDates.format('YYYY-MM-DD') == selectedDay ? 'selected' : '';
 
+    // let event = { date: '2021-01-01', info: 'first day of 2021' };
+
+    for (let e = 0; e < events.length; e++) {
+      console.log(events[e].date);
+      console.log(d);
+    }
+
     daysInMonth.push(
       <td
         key={d}
@@ -123,6 +137,9 @@ function Calendar() {
         }}
       >
         <span name={d}>{d}</span>
+        <span>
+          {/* {event.date === allTheDates.format('YYYY-MM-DD') ? event.info : ''} */}
+        </span>
       </td>
     );
   }
@@ -266,7 +283,7 @@ function Calendar() {
   const goToChangedYear = (e, year) => {
     e.preventDefault();
 
-    //setGoToYear(dayjs(dateObject).year(year));
+    // setGoToYear(dayjs(dateObject).year(year));
     setDateObject(dayjs().year(goToYear));
     setShowYearSelector(false);
   };
@@ -296,6 +313,11 @@ function Calendar() {
   // * Display the selected day
   const displaySelectedDay = () => {
     return <p>The selected Day is {dayjs(selectedDay).format('DD/MM/YYYY')}</p>;
+  };
+
+  // * Add event to calendar
+  const addEvent = () => {
+    return <p>This is an event! Set for {selectedDay}</p>;
   };
 
   // ? Testing and Return
@@ -365,6 +387,8 @@ function Calendar() {
           </thead>
           <tbody>{calendarDays}</tbody>
         </table>
+
+        <button type="button">Add Event</button>
       </div>
     </div>
   );

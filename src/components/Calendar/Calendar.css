@@ -59,6 +59,10 @@
   justify-content: center;
 }
 
+.calendar-day {
+  height: 80px;
+}
+
 .calendar-month {
   margin: 0 auto;
 }
