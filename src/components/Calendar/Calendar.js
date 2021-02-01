@@ -21,6 +21,8 @@ import 'dayjs/locale/en';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
+import CalendarApiService from '../../services/calendar-api-service';
+
 import './Calendar.css';
 
 dayjs.extend(updateLocale);
@@ -32,6 +34,8 @@ dayjs.updateLocale('en', {
 });
 dayjs.locale('en');
 
+CalendarApiService.getEvents();
+
 function Calendar() {
   // * Highlight the current day
   const currentDay = () => {
@@ -40,13 +44,22 @@ function Calendar() {
     }
   };
 
+  // * Events load when page opens
+  useEffect(() => {
+    CalendarApiService.getEvents().then((e) => {
+      console.log(e);
+      setEvents(e);
+    });
+  }, []);
+
   // * Sample Events
   const eventsStorage = [
     { date: '2021-01-01', info: 'First day of 2021' },
     { date: '2021-01-01', info: 'New Years Day' },
     { date: '2021-01-02', info: 'Second day of 2021' },
     { date: '2021-01-03', info: 'Third day of 2021' },
-    { date: '2021-01-04', info: 'Fourth day of 2021' }
+    { date: '2021-01-04', info: 'Fourth day of 2021' },
+    { date: '2021-01-18', info: 'Day 18' }
   ];
 
   //* State
@@ -148,8 +161,9 @@ function Calendar() {
       >
         <span name={d}>{d}</span>
         <ul>
-          {dailyEvents.map((event) => (
+          {dailyEvents.map((event, i) => (
             <li
+              key={i}
               onClick={(e) => {
                 onDayClickChild(e);
               }}
@@ -337,7 +351,7 @@ function Calendar() {
 
   // * Display the selected day
   const displaySelectedDay = () => {
-    return <p>The selected Day is {dayjs(selectedDay).format('DD/MM/YYYY')}</p>;
+    return <p>The selected Day is {dayjs(selectedDay).format('MM/DD/YYYY')}</p>;
   };
 
   // * Add event to calendar
@@ -354,8 +368,9 @@ function Calendar() {
   // console.log(rows);
   // console.log(calendarDays);
   // console.log(currentDay());
-  console.log(selectedDay);
+  // console.log(selectedDay);
 
+  // ??????? RETURN ??????
   return (
     <div>
       <h2>the endless march of time</h2>

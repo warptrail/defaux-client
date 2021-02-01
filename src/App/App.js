@@ -43,7 +43,7 @@ export default class App extends Component {
               path="/widget/:widgetId"
               component={SingleWidgetRoute}
             />
-            <Route exact path="/calendar" component={CalendarRoute} />
+            <PrivateRoute exact path="/calendar" component={CalendarRoute} />
             <Route exact path="/music" component={MusicRoute} />
             <Route exact path="/time" component={TimeRoute} />
             <Route exact path="/effect" component={EffectRoute} />
