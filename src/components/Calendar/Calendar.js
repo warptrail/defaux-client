@@ -11,6 +11,8 @@
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from 'react';
 
+import NewEventForm from './NewEventForm';
+
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import isoWeekday from 'dayjs/plugin/isoWeek';
@@ -69,6 +71,14 @@ function Calendar() {
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
   const [events, setEvents] = useState(eventsStorage);
+  const [testState, setTestState] = useState({});
+
+  console.log(testState);
+
+  const newEventOnSubmit = (obj) => {
+    console.log('hiii');
+    setTestState(obj);
+  };
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
@@ -429,6 +439,11 @@ function Calendar() {
         </table>
 
         <button type="button">Add Event</button>
+        <NewEventForm
+          selectedDay={selectedDay}
+          rogtrog="stuff"
+          newEventOnSubmit={newEventOnSubmit}
+        />
       </div>
     </div>
   );
