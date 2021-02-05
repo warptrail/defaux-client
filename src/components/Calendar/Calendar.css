@@ -13,9 +13,11 @@
   background-color: black;
   margin-bottom: 500px;
   padding-bottom: 50px;
+  margin: 0 auto;
 }
 
 .calendar-box table {
+  width: 80%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

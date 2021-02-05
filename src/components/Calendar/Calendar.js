@@ -11,8 +11,6 @@
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from 'react';
 
-import NewEventForm from './NewEventForm';
-
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import isoWeekday from 'dayjs/plugin/isoWeek';
@@ -22,7 +20,7 @@ import 'dayjs/locale/en';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-
+import NewEventForm from './NewEventForm';
 import CalendarApiService from '../../services/calendar-api-service';
 
 import './Calendar.css';
@@ -71,13 +69,31 @@ function Calendar() {
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
   const [events, setEvents] = useState(eventsStorage);
-  const [testState, setTestState] = useState({});
+  const [testState, setTestState] = useState({
+    bloop: 'awake',
+    droop: 'moose',
+    loop: 32
+  });
 
-  console.log(testState);
+  const TestStateButton = () => {
+    const changeTestState = { ...testState };
+
+    changeTestState.bloop = 'Neat Socks';
+    return (
+      <button onClick={() => setTestState(changeTestState)}>
+        Click this button
+      </button>
+    );
+  };
 
   const newEventOnSubmit = (obj) => {
-    console.log('hiii');
-    setTestState(obj);
+    const newEventObject = obj;
+    newEventObject.date = selectedDay;
+
+    let addEvent = [...events, newEventObject];
+    CalendarApiService.postNewEvent(newEventObject).then((newEvent) => {
+      setEvents(addEvent);
+    });
   };
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
@@ -152,12 +168,9 @@ function Calendar() {
 
     for (let i = 0; i < events.length; i++) {
       if (events[i].date === allTheDates.format('YYYY-MM-DD')) {
-        //console.log(events[i][prop]);
         dailyEvents.push(events[i]);
       }
     }
-
-    console.log(dailyEvents);
 
     daysInMonth.push(
       <td
@@ -445,6 +458,7 @@ function Calendar() {
           newEventOnSubmit={newEventOnSubmit}
         />
       </div>
+      <TestStateButton />
     </div>
   );
 }

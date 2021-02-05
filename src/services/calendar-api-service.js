@@ -3,13 +3,16 @@ import TokenService from '../services/token-service';
 
 const CalendarApiService = {
   getEvents() {
-    return fetch(`${config.API_ENDPOINT}/event`, {
-      headers: {
-        authorization: `bearer ${TokenService.getAuthToken()}`
-      }
-    }).then((res) => {
-      return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
-    });
+    if (TokenService.hasAuthToken()) {
+      return fetch(`${config.API_ENDPOINT}/event`, {
+        headers: {
+          authorization: `bearer ${TokenService.getAuthToken()}`
+        }
+      }).then((res) => {
+        return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
+      });
+    }
+    return null;
   },
 
   getEvent() {
@@ -28,7 +31,7 @@ const CalendarApiService = {
     );
   },
 
-  newEvent(data) {
+  postNewEvent(data) {
     return fetch(`${config.API_ENDPOINT}/event`, {
       method: 'POST',
       headers: {
