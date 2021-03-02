@@ -1,0 +1,40 @@
+.dog-app {
+  display: flex;
+  flex-direction: column;
+}
+
+.dog-app form {
+  margin: 0 auto;
+}
+
+.dog-app form input {
+  width: 400px;
+  background-color: cadetblue;
+  color: white;
+  margin: 1px;
+  font-size: 22px;
+}
+
+.dog-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dog-box {
+  border: 1px solid gold;
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  min-width: 250px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.dog-box ul {
+  list-style: none;
+}
+
+.dog-box ul li {
+  margin: 5px;
+}

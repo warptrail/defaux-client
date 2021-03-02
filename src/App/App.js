@@ -15,6 +15,7 @@ import MusicRoute from '../routes/MusicRoute/MusicRoute';
 import EffectRoute from '../routes/EffectRoute/EffectRoute';
 import MoshRoute from '../routes/MoshRoute/MoshRoute';
 import PayCalculatorRoute from '../routes/PayCalculatorRoute/PayCalculatorRoute.js';
+import Dogs from '../routes/DogsRoute/DogsRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
 import './App.css';
 
@@ -49,6 +50,7 @@ export default class App extends Component {
             <Route exact path="/effect" component={EffectRoute} />
             <Route exact path="/mosh" component={MoshRoute} />
             <Route exact path="/paycalculator" component={PayCalculatorRoute} />
+            <Route exact path="/dogs" component={Dogs} />
             <Route component={NotFoundRoute} />
           </Switch>
         </main>

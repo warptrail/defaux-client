@@ -22,6 +22,8 @@ function Widget(props) {
     setChangeNameInput(value);
   };
 
+  console.log(props);
+
   return (
     <div>
       <p>Widget Number {props.id}</p>

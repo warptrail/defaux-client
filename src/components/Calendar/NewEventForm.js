@@ -3,25 +3,27 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 function NewEventForm(props) {
+  const { categories, newEventOnSubmit, selectedDay } = props;
+
   const [eventObject, setEventObject] = useState({
     time: dayjs().format('HH:mm'),
-    info: '',
-    category: 'general',
+    info: 'blank event',
+    category_id: 1,
     start_timestamp: '',
     end_timestamp: null
   });
 
-  // console.log(dayjs('2018-04-04T16:00:00Z'));
-
-  const { newEventOnSubmit } = props;
-
+  // function that runs from the form submit button
   const onClickButton = (e) => {
     e.preventDefault();
+
     const newEventDateStamp = `${props.selectedDay}T${
       eventObject.time
     }:00${dayjs().format('Z')}`;
+
     const makeNewEventObject = {
-      ...eventObject,
+      info: eventObject.info,
+      category_id: eventObject.category_id,
       start_timestamp: newEventDateStamp,
       end_timestamp: dayjs(newEventDateStamp)
         .add(1, 'hour')
@@ -33,7 +35,7 @@ function NewEventForm(props) {
     setEventObject({
       ...eventObject,
       info: '',
-      category: 'general',
+      category_id: 1,
       start_timestamp: '',
       end_timestamp: ''
     });
@@ -41,13 +43,24 @@ function NewEventForm(props) {
 
   // handleChange for multiple inputs
   const handleChange = (e) => {
-    console.log(e.target.name);
     const { value } = e.target;
     setEventObject({
       ...eventObject,
       [e.target.name]: value
     });
   };
+
+  // render the categories in the selector from props
+
+  const renderCategorySelector = categories.map((category) => {
+    return (
+      <option key={`option-${category.category_id}`}>
+        {category.encoded_name}
+      </option>
+    );
+  });
+
+  console.log(categories);
 
   return (
     <form
@@ -56,7 +69,7 @@ function NewEventForm(props) {
         onClickButton(e);
       }}
     >
-      <p>{props.selectedDay}</p>
+      <p>{selectedDay}</p>
       <label>Info</label>
       <input
         id="new-event-info"
@@ -66,13 +79,15 @@ function NewEventForm(props) {
         onChange={handleChange}
       />
       <label>Category</label>
-      <input
+      <select
         id="new-event-category"
-        name="category"
+        name="category_id"
         type="text"
-        value={eventObject.category}
+        value={eventObject.category_id}
         onChange={handleChange}
-      />
+      >
+        {renderCategorySelector}
+      </select>
       <label>Time</label>
       <input
         id="new-event-time"

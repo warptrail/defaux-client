@@ -43,7 +43,7 @@ const CalendarApiService = {
         start_timestamp: data.start_timestamp,
         end_timestamp: data.end_timestamp,
         info: data.info,
-        category: data.category
+        category_id: data.category_id
       })
     }).then((res) =>
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
@@ -54,6 +54,63 @@ const CalendarApiService = {
     return fetch(`${config.API_ENDPOINT}/event/single/${id}`, {
       method: 'DELETE'
     });
+  },
+
+  getCategories() {
+    if (TokenService.hasAuthToken()) {
+      return fetch(`${config.API_ENDPOINT}/event/category`, {
+        headers: {
+          authorization: `bearer ${TokenService.getAuthToken()}`
+        }
+      }).then((res) => {
+        return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
+      });
+    }
+    return null;
+  },
+
+  postNewCategory(data) {
+    return fetch(`${config.API_ENDPOINT}/event/category`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `bearer ${TokenService.getAuthToken()}`
+      },
+      body: JSON.stringify({
+        real_name: data.real_name,
+        encoded_name: data.encoded_name,
+        icon: data.icon,
+        color: data.color
+      })
+    }).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+
+  getSpecificCategory(id) {
+    return fetch(`${config.API_ENDPOINT}/event/category/${id}`).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
+  },
+
+  deleteCategory(id) {
+    return fetch(`${config.API_ENDPOINT}/event/category/${id}`, {
+      method: 'DELETE'
+    });
+  },
+
+  updateCategory(data, id) {
+    console.log(data);
+    return fetch(`${config.API_ENDPOINT}/event/category/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `bearer ${TokenService.getAuthToken()}`
+      },
+      body: JSON.stringify(data)
+    }).then((res) =>
+      !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
+    );
   }
 };
 

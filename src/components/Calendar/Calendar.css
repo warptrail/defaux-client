@@ -19,15 +19,15 @@
 .calendar-box table {
   width: 80%;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* display: flex;
+  flex-direction: column; */
+  /* justify-content: center; */
 }
 
 .calendar-box table tr td {
   padding: 10px;
   border-bottom: 1px solid yellow;
-  width: 200px;
+  width: 100px;
 }
 
 .today {
@@ -95,4 +95,58 @@
 
 .next_button:before {
   content: '>>';
+}
+
+.selected_day_event_panel {
+  margin: 20px 20px;
+  border: 1px solid red;
+  padding: 20px 30px;
+}
+
+.selected_day_event_panel_button_row {
+  text-align: center;
+}
+
+.category_dashboard {
+  border: 1px solid yellow;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.category_dashboard > * {
+  border: 1px solid orchid;
+  margin: 0 100px;
+  min-width: 300px;
+}
+
+.new_category_form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 20%;
+}
+
+.new_category_form label {
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.new_category_form input {
+  width: 90%;
+}
+
+.category_controls {
+  padding: 0 40px;
+  width: 30%;
+}
+
+.category_item {
+  background-color: darkblue;
+  padding: 5px;
+  margin: 5px;
+}
+
+.category_item:hover {
+  background-color: slategray;
 }

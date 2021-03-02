@@ -20,7 +20,10 @@ import 'dayjs/locale/en';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+
 import NewEventForm from './NewEventForm';
+import CategoryDashboard from './CategoryDashboard';
+
 import CalendarApiService from '../../services/calendar-api-service';
 
 import './Calendar.css';
@@ -45,22 +48,17 @@ function Calendar() {
   };
 
   // * Events load when page opens
-  useEffect(() => {
-    CalendarApiService.getEvents().then((e) => {
-      console.log(e);
-      setEvents(e);
-    });
-  }, []);
 
-  // * Sample Events
-  const eventsStorage = [
-    { date: '2021-01-01', info: 'First day of 2021' },
-    { date: '2021-01-01', info: 'New Years Day' },
-    { date: '2021-01-02', info: 'Second day of 2021' },
-    { date: '2021-01-03', info: 'Third day of 2021' },
-    { date: '2021-01-04', info: 'Fourth day of 2021' },
-    { date: '2021-01-18', info: 'Day 18' }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const resEvents = await CalendarApiService.getEvents();
+      const resCategories = await CalendarApiService.getCategories();
+
+      setUserData({ events: resEvents, categories: resCategories });
+    };
+
+    fetchData();
+  }, []);
 
   //* State
   const [dateObject, setDateObject] = useState(dayjs().locale('en'));
@@ -68,32 +66,64 @@ function Calendar() {
   const [showYearSelector, setShowYearSelector] = useState(false);
   const [goToYear, setGoToYear] = useState(dayjs().format('YYYY'));
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
-  const [events, setEvents] = useState(eventsStorage);
-  const [testState, setTestState] = useState({
-    bloop: 'awake',
-    droop: 'moose',
-    loop: 32
-  });
+  const [userData, setUserData] = useState({ events: [], categories: [] });
 
-  const TestStateButton = () => {
-    const changeTestState = { ...testState };
+  // Form submit functions to prop drill into form sub components
+  const newEventOnSubmit = async (obj) => {
+    try {
+      const newEventObject = obj;
+      const userDataEvents = userData.events;
 
-    changeTestState.bloop = 'Neat Socks';
-    return (
-      <button onClick={() => setTestState(changeTestState)}>
-        Click this button
-      </button>
-    );
+      newEventObject.date = selectedDay;
+      userDataEvents.push(newEventObject);
+
+      await CalendarApiService.postNewEvent(newEventObject);
+      const updatedEventArray = await CalendarApiService.getEvents();
+
+      setUserData({ ...userData, events: updatedEventArray });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const newEventOnSubmit = (obj) => {
-    const newEventObject = obj;
-    newEventObject.date = selectedDay;
+  const newCategoryOnSubmit = async (newCategoryObject) => {
+    try {
+      const userDataCategories = userData.categories;
 
-    let addEvent = [...events, newEventObject];
-    CalendarApiService.postNewEvent(newEventObject).then((newEvent) => {
-      setEvents(addEvent);
-    });
+      userDataCategories.push(newCategoryObject);
+
+      await CalendarApiService.postNewCategory(newCategoryObject);
+
+      const updatedCategoryArray = await CalendarApiService.getCategories();
+
+      setUserData({ ...userData, categories: updatedCategoryArray });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editCategoryOnSubmit = async (category) => {
+    try {
+      const categoryId = category.category_id;
+      await CalendarApiService.updateCategory(category, categoryId);
+
+      const updatedCategoryArray = userData.categories;
+      let indexToUpdate = null;
+      // get the category before update
+      let updateCategory = userData.categories.find((cat, index) => {
+        if (cat.category_id === categoryId) {
+          indexToUpdate = index;
+          return true;
+        }
+      });
+
+      // make the updates
+      updatedCategoryArray[indexToUpdate] = category;
+
+      setUserData({ ...userData, categories: updatedCategoryArray });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
@@ -166,9 +196,9 @@ function Calendar() {
     // push events from main event library if they match dateObject
     let dailyEvents = [];
 
-    for (let i = 0; i < events.length; i++) {
-      if (events[i].date === allTheDates.format('YYYY-MM-DD')) {
-        dailyEvents.push(events[i]);
+    for (let i = 0; i < userData.events.length; i++) {
+      if (userData.events[i].date === allTheDates.format('YYYY-MM-DD')) {
+        dailyEvents.push(userData.events[i]);
       }
     }
 
@@ -191,7 +221,7 @@ function Calendar() {
                 onDayClickChild(e);
               }}
             >
-              {event.info}
+              {event.category}
             </li>
           ))}
         </ul>
@@ -377,11 +407,6 @@ function Calendar() {
     return <p>The selected Day is {dayjs(selectedDay).format('MM/DD/YYYY')}</p>;
   };
 
-  // * Add event to calendar
-  const addEvent = () => {
-    return <p>This is an event! Set for {selectedDay}</p>;
-  };
-
   // ? Testing and Return
   // console.log(firstDayOfMonth());
   // console.log(dateObject);
@@ -451,14 +476,26 @@ function Calendar() {
           <tbody>{calendarDays}</tbody>
         </table>
 
-        <button type="button">Add Event</button>
-        <NewEventForm
-          selectedDay={selectedDay}
-          rogtrog="stuff"
-          newEventOnSubmit={newEventOnSubmit}
+        <div className="selected_day_event_panel">
+          <div className="selected_day_event_panel_button_row">
+            <button type="button">Add Event</button>
+            <button type="button">Event Overview</button>
+            <button type="button">Analytics </button>
+          </div>
+
+          <NewEventForm
+            selectedDay={selectedDay}
+            newEventOnSubmit={newEventOnSubmit}
+            categories={userData.categories}
+          />
+        </div>
+        {/* Category Form */}
+        <CategoryDashboard
+          newCategoryOnSubmit={newCategoryOnSubmit}
+          editCategoryOnSubmit={editCategoryOnSubmit}
+          categories={userData.categories}
         />
       </div>
-      <TestStateButton />
     </div>
   );
 }
