@@ -27,6 +27,7 @@ import CategoryDashboard from './CategoryDashboard';
 import CalendarApiService from '../../services/calendar-api-service';
 
 import './Calendar.css';
+import SelectedDayPanel from './SelectedDayPanel';
 
 dayjs.extend(updateLocale);
 dayjs.extend(weekday);
@@ -476,19 +477,14 @@ function Calendar() {
           <tbody>{calendarDays}</tbody>
         </table>
 
-        <div className="selected_day_event_panel">
-          <div className="selected_day_event_panel_button_row">
-            <button type="button">Add Event</button>
-            <button type="button">Event Overview</button>
-            <button type="button">Analytics </button>
-          </div>
+        {/* Selected Day Panel */}
 
-          <NewEventForm
-            selectedDay={selectedDay}
-            newEventOnSubmit={newEventOnSubmit}
-            categories={userData.categories}
-          />
-        </div>
+        <SelectedDayPanel
+          selectedDay={selectedDay}
+          userData={userData}
+          newEventOnSubmit={newEventOnSubmit}
+        />
+
         {/* Category Form */}
         <CategoryDashboard
           newCategoryOnSubmit={newCategoryOnSubmit}

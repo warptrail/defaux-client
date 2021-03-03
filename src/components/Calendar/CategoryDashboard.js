@@ -7,7 +7,6 @@ import Category from './Category';
 function CategoryDashboard(props) {
   const { categories, newCategoryOnSubmit, editCategoryOnSubmit } = props;
 
-  const [toggleEditPanel, setToggleEditPanel] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState(null);
 
   const displayCategories = () => {
@@ -46,14 +45,17 @@ function CategoryDashboard(props) {
   };
 
   return (
-    <div className="category_dashboard">
-      <CategoryForm
-        newCategoryOnSubmit={newCategoryOnSubmit}
-        editCategoryOnSubmit={editCategoryOnSubmit}
-        updateForm={false}
-        category={null}
-      />
-      {categoryPanel()}
+    <div>
+      <h2>Category Interface</h2>
+      <div className="category_dashboard">
+        <CategoryForm
+          newCategoryOnSubmit={newCategoryOnSubmit}
+          editCategoryOnSubmit={editCategoryOnSubmit}
+          updateForm={false}
+          category={null}
+        />
+        {categoryPanel()}
+      </div>
     </div>
   );
 }

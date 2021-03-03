@@ -69,7 +69,6 @@ function NewEventForm(props) {
         onClickButton(e);
       }}
     >
-      <p>{selectedDay}</p>
       <label>Info</label>
       <input
         id="new-event-info"
