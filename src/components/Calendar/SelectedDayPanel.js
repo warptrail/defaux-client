@@ -4,7 +4,13 @@ import React, { useState } from 'react';
 import EventForm from './EventForm';
 
 function SelectedDayPanel(props) {
-  const { selectedDay, newEventOnSubmit, editEventOnSubmit, userData } = props;
+  const {
+    selectedDay,
+    newEventOnSubmit,
+    editEventOnSubmit,
+    userData,
+    deleteEventOnClick
+  } = props;
 
   const [toggleEventIndex, setToggleEventIndex] = useState(null);
 
@@ -28,6 +34,10 @@ function SelectedDayPanel(props) {
           <button type="button" onClick={() => toggleEditEventForm(index)}>
             Edit
           </button>
+          <button type="button" onClick={() => deleteEventOnClick(event.id)}>
+            Delete
+          </button>
+
           {index === toggleEventIndex ? (
             <EventForm
               selectedDay={selectedDay}

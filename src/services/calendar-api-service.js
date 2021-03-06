@@ -53,7 +53,10 @@ const CalendarApiService = {
 
   deleteEvent(id) {
     return fetch(`${config.API_ENDPOINT}/event/single/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        authorization: `bearer ${TokenService.getAuthToken()}`
+      }
     });
   },
 

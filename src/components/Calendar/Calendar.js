@@ -111,6 +111,23 @@ function Calendar() {
     }
   };
 
+  const deleteEventOnClick = async (eventId) => {
+    try {
+      console.log('deleting ', eventId);
+      await CalendarApiService.deleteEvent(eventId);
+
+      // update state
+      const preDeleteEvents = userData.events;
+      const postDeleteEvents = preDeleteEvents.filter(
+        (deletedEvent) => deletedEvent.id !== eventId
+      );
+
+      setUserData({ ...userData, events: postDeleteEvents });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const newCategoryOnSubmit = async (categoryObject) => {
     try {
       const userDataCategories = userData.categories;
@@ -509,6 +526,7 @@ function Calendar() {
           userData={userData}
           newEventOnSubmit={newEventOnSubmit}
           editEventOnSubmit={editEventOnSubmit}
+          deleteEventOnClick={deleteEventOnClick}
         />
 
         {/* Category Form */}
