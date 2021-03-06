@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 function Category(props) {
   const { category, setCategoryToEdit } = props;
 
-  console.log(category);
-
   return (
     <li className="category_item">
       <p>{category.encoded_name}</p>

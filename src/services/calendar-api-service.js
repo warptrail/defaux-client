@@ -20,12 +20,14 @@ const CalendarApiService = {
   },
 
   updateEvent(data, id) {
+    console.log(data);
     return fetch(`${config.API_ENDPOINT}/event/single/${id}`, {
       method: 'PATCH',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        authorization: `bearer ${TokenService.getAuthToken()}`
       },
-      body: JSON.stringify({ name: data.name })
+      body: JSON.stringify(data)
     }).then((res) =>
       !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json()
     );
@@ -40,8 +42,7 @@ const CalendarApiService = {
       },
       body: JSON.stringify({
         date: data.date,
-        start_timestamp: data.start_timestamp,
-        end_timestamp: data.end_timestamp,
+        timestamp: data.timestamp,
         info: data.info,
         category_id: data.category_id
       })

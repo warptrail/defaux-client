@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 
-function NewCategoryForm(props) {
+function CategoryForm(props) {
+  // * State
   const [state, setState] = useState({
     realName: 'General',
     encodedName: 'eeroy',
@@ -9,6 +10,7 @@ function NewCategoryForm(props) {
     color: '#000'
   });
 
+  // * Props
   const {
     newCategoryOnSubmit,
     editCategoryOnSubmit,
@@ -28,8 +30,6 @@ function NewCategoryForm(props) {
     }
   }, [category]);
 
-  console.log(props);
-
   // handleChange for multiple inputs
   const handleChange = (e) => {
     const { value } = e.target;
@@ -39,7 +39,7 @@ function NewCategoryForm(props) {
     });
   };
 
-  const onClickButton = (e) => {
+  const onClickSubmit = (e) => {
     e.preventDefault();
 
     const newCategoryObject = {
@@ -65,7 +65,7 @@ function NewCategoryForm(props) {
     <form
       className="new_category_form"
       onSubmit={(e) => {
-        onClickButton(e);
+        onClickSubmit(e);
       }}
     >
       {updateForm ? <h3>Edit Category</h3> : <h3>Add New Category</h3>}
@@ -119,4 +119,4 @@ function NewCategoryForm(props) {
   );
 }
 
-export default NewCategoryForm;
+export default CategoryForm;

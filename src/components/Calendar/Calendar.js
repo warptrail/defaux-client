@@ -21,7 +21,6 @@ import 'dayjs/locale/en';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-import NewEventForm from './NewEventForm';
 import CategoryDashboard from './CategoryDashboard';
 
 import CalendarApiService from '../../services/calendar-api-service';
@@ -69,13 +68,14 @@ function Calendar() {
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
   const [userData, setUserData] = useState({ events: [], categories: [] });
 
-  // Form submit functions to prop drill into form sub components
+  //* Form submit functions to prop drill into form sub components
   const newEventOnSubmit = async (obj) => {
     try {
       const newEventObject = obj;
       const userDataEvents = userData.events;
 
-      newEventObject.date = selectedDay;
+      console.log(obj);
+
       userDataEvents.push(newEventObject);
 
       await CalendarApiService.postNewEvent(newEventObject);
@@ -87,13 +87,37 @@ function Calendar() {
     }
   };
 
-  const newCategoryOnSubmit = async (newCategoryObject) => {
+  const editEventOnSubmit = async (eventObject) => {
+    try {
+      const eventId = eventObject.id;
+      await CalendarApiService.updateEvent(eventObject, eventId);
+
+      const updatedEventArray = userData.events;
+      let indexToUpdate = null;
+
+      // get the event index before update
+      userData.events.find((ev, index) => {
+        if (ev.id === eventId) {
+          indexToUpdate = index;
+          return true;
+        }
+      });
+
+      updatedEventArray[indexToUpdate] = eventObject;
+
+      setUserData({ ...userData, events: updatedEventArray });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const newCategoryOnSubmit = async (categoryObject) => {
     try {
       const userDataCategories = userData.categories;
 
-      userDataCategories.push(newCategoryObject);
+      userDataCategories.push(categoryObject);
 
-      await CalendarApiService.postNewCategory(newCategoryObject);
+      await CalendarApiService.postNewCategory(categoryObject);
 
       const updatedCategoryArray = await CalendarApiService.getCategories();
 
@@ -103,15 +127,15 @@ function Calendar() {
     }
   };
 
-  const editCategoryOnSubmit = async (category) => {
+  const editCategoryOnSubmit = async (categoryObject) => {
     try {
-      const categoryId = category.category_id;
-      await CalendarApiService.updateCategory(category, categoryId);
+      const categoryId = categoryObject.category_id;
+      await CalendarApiService.updateCategory(categoryObject, categoryId);
 
       const updatedCategoryArray = userData.categories;
       let indexToUpdate = null;
-      // get the category before update
-      let updateCategory = userData.categories.find((cat, index) => {
+      // get the category index before update
+      userData.categories.find((cat, index) => {
         if (cat.category_id === categoryId) {
           indexToUpdate = index;
           return true;
@@ -119,7 +143,7 @@ function Calendar() {
       });
 
       // make the updates
-      updatedCategoryArray[indexToUpdate] = category;
+      updatedCategoryArray[indexToUpdate] = categoryObject;
 
       setUserData({ ...userData, categories: updatedCategoryArray });
     } catch (error) {
@@ -400,6 +424,7 @@ function Calendar() {
     e.stopPropagation();
     const parent = e.target.parentElement.parentElement;
     const selectDay = parent.getAttribute('name');
+    console.log('parent', parent);
     setSelectedDay(selectDay);
   };
 
@@ -483,6 +508,7 @@ function Calendar() {
           selectedDay={selectedDay}
           userData={userData}
           newEventOnSubmit={newEventOnSubmit}
+          editEventOnSubmit={editEventOnSubmit}
         />
 
         {/* Category Form */}
