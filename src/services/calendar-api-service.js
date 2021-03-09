@@ -1,5 +1,5 @@
 import config from '../config';
-import TokenService from '../services/token-service';
+import TokenService from './token-service';
 
 const CalendarApiService = {
   getEvents() {
@@ -99,7 +99,10 @@ const CalendarApiService = {
 
   deleteCategory(id) {
     return fetch(`${config.API_ENDPOINT}/event/category/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        authorization: `bearer ${TokenService.getAuthToken()}`
+      }
     });
   },
 

@@ -74,14 +74,11 @@ function Calendar() {
       const newEventObject = obj;
       const userDataEvents = userData.events;
 
-      console.log(obj);
-
       userDataEvents.push(newEventObject);
 
       await CalendarApiService.postNewEvent(newEventObject);
-      const updatedEventArray = await CalendarApiService.getEvents();
 
-      setUserData({ ...userData, events: updatedEventArray });
+      setUserData({ ...userData, events: userDataEvents });
     } catch (error) {
       console.log(error);
     }
@@ -168,9 +165,24 @@ function Calendar() {
     }
   };
 
+  const deleteCategoryOnClick = async (categoryId) => {
+    try {
+      console.log(categoryId);
+      await CalendarApiService.deleteCategory(categoryId);
+
+      const preDeleteCategories = userData.categories;
+      const postDeleteCategories = preDeleteCategories.filter((cat) => {
+        return cat.category_id !== categoryId;
+      });
+      setUserData({ ...userData, categories: postDeleteCategories });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
 
-  // Build the Calendar with Mosh
+  // * Build the Calendar with Mosh
   const firstDayOfMonth = () => {
     const firstDay = dateObject.startOf('month').weekday();
     return firstDay;
@@ -533,6 +545,7 @@ function Calendar() {
         <CategoryDashboard
           newCategoryOnSubmit={newCategoryOnSubmit}
           editCategoryOnSubmit={editCategoryOnSubmit}
+          deleteCategoryOnClick={deleteCategoryOnClick}
           categories={userData.categories}
         />
       </div>

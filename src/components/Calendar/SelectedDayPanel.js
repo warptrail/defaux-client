@@ -29,15 +29,14 @@ function SelectedDayPanel(props) {
   const RenderEventsForSelectedDay = EventsForSelectedDay.map(
     (event, index) => {
       return (
-        <li key={event.id}>
-          {event.info}
+        <li key={index}>
+          {event.info} - {event.real_name}
           <button type="button" onClick={() => toggleEditEventForm(index)}>
             Edit
           </button>
           <button type="button" onClick={() => deleteEventOnClick(event.id)}>
             Delete
           </button>
-
           {index === toggleEventIndex ? (
             <EventForm
               selectedDay={selectedDay}

@@ -5,7 +5,12 @@ import CategoryForm from './CategoryForm';
 import Category from './Category';
 
 function CategoryDashboard(props) {
-  const { categories, newCategoryOnSubmit, editCategoryOnSubmit } = props;
+  const {
+    categories,
+    newCategoryOnSubmit,
+    editCategoryOnSubmit,
+    deleteCategoryOnClick
+  } = props;
 
   const [categoryToEdit, setCategoryToEdit] = useState(null);
 
@@ -16,6 +21,7 @@ function CategoryDashboard(props) {
           key={i}
           category={category}
           setCategoryToEdit={setCategoryToEdit}
+          deleteCategoryOnClick={deleteCategoryOnClick}
         />
       );
     });

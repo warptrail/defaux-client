@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 
 function Category(props) {
-  const { category, setCategoryToEdit } = props;
-
+  const { category, setCategoryToEdit, deleteCategoryOnClick } = props;
+  console.log(category);
   return (
     <li className="category_item">
       <p>{category.encoded_name}</p>
@@ -15,7 +15,14 @@ function Category(props) {
       >
         Edit
       </button>
-      <button>Delete</button>
+      <button
+        type="button"
+        onClick={() => {
+          deleteCategoryOnClick(category.category_id);
+        }}
+      >
+        Delete
+      </button>
     </li>
   );
 }
