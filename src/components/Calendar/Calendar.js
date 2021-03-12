@@ -17,16 +17,13 @@ import isoWeekday from 'dayjs/plugin/isoWeek';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import 'dayjs/locale/en';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-
-import CategoryDashboard from './CategoryDashboard';
-
 import CalendarApiService from '../../services/calendar-api-service';
 
-import './Calendar.css';
+import CategoryDashboard from './CategoryDashboard';
 import SelectedDayPanel from './SelectedDayPanel';
+
+import './Calendar.css';
 
 dayjs.extend(updateLocale);
 dayjs.extend(weekday);
@@ -38,6 +35,34 @@ dayjs.updateLocale('en', {
 dayjs.locale('en');
 
 CalendarApiService.getEvents();
+
+const coffeeIcon = <FontAwesomeIcon icon="coffee" />;
+const anchorIcon = <FontAwesomeIcon icon="location-arrow" />;
+const locationArrowIcon = <FontAwesomeIcon icon="location-arrow" />;
+const carIcon = <FontAwesomeIcon icon="car" />;
+const bicycleIcon = <FontAwesomeIcon icon="bicycle" />;
+const beerIcon = <FontAwesomeIcon icon="beer" />;
+const bombIcon = <FontAwesomeIcon icon="bomb" />;
+const banIcon = <FontAwesomeIcon icon="ban" />;
+const bookIcon = <FontAwesomeIcon icon="book" />;
+const bugIcon = <FontAwesomeIcon icon="bug" />;
+const calendarIcon = <FontAwesomeIcon icon="calendar" />;
+const cameraIcon = <FontAwesomeIcon icon="camera" />;
+const codeBranchIcon = <FontAwesomeIcon icon="code-branch" />;
+const downloadIcon = <FontAwesomeIcon icon="download" />;
+const envelopeIcon = <FontAwesomeIcon icon="envelope" />;
+const fighterJetIcon = <FontAwesomeIcon icon="fighter-jet" />;
+const fireExtinguisherIcon = <FontAwesomeIcon icon="fire-extinguisher" />;
+const flaskIcon = <FontAwesomeIcon icon="fire-extinguisher" />;
+const headPhonesIcon = <FontAwesomeIcon icon="headphones" />;
+const penIcon = <FontAwesomeIcon icon="pen" />;
+const showerIcon = <FontAwesomeIcon icon="shower" />;
+const shoppingBasketIcon = <FontAwesomeIcon icon="shopping-basket" />;
+const hamburgerIcon = <FontAwesomeIcon icon="hamburger" />;
+const diceD20Icon = <FontAwesomeIcon icon="dice-d20" />;
+const circleIcon = <FontAwesomeIcon icon="circle" />;
+const bellIcon = <FontAwesomeIcon icon="bell" />;
+const umbrellaBeachIcon = <FontAwesomeIcon icon="umbrella-beach" />;
 
 function Calendar() {
   // * Highlight the current day
@@ -68,10 +93,20 @@ function Calendar() {
   const [selectedDay, setSelectedDay] = useState(dayjs().format('YYYY-MM-DD'));
   const [userData, setUserData] = useState({ events: [], categories: [] });
 
+  console.log(userData);
+
   //* Form submit functions to prop drill into form sub components
-  const newEventOnSubmit = async (obj) => {
+  const newEventOnSubmit = async (newEvent) => {
     try {
-      const newEventObject = obj;
+      const newEventObject = newEvent;
+
+      if (!newEventObject.category_id) {
+        newEventObject.icon = 'circle';
+        newEventObject.color = '000';
+        newEventObject.real_name = 'no category';
+        newEventObject.encoded_name = 'no category';
+      }
+
       const userDataEvents = userData.events;
 
       userDataEvents.push(newEventObject);
@@ -180,8 +215,6 @@ function Calendar() {
     }
   };
 
-  const coffeeIcon = <FontAwesomeIcon icon={faCoffee} />;
-
   // * Build the Calendar with Mosh
   const firstDayOfMonth = () => {
     const firstDay = dateObject.startOf('month').weekday();
@@ -275,7 +308,7 @@ function Calendar() {
                 onDayClickChild(e);
               }}
             >
-              {event.category}
+              <FontAwesomeIcon icon={event.icon} />
             </li>
           ))}
         </ul>
@@ -453,7 +486,6 @@ function Calendar() {
     e.stopPropagation();
     const parent = e.target.parentElement.parentElement;
     const selectDay = parent.getAttribute('name');
-    console.log('parent', parent);
     setSelectedDay(selectDay);
   };
 
@@ -477,8 +509,8 @@ function Calendar() {
   return (
     <div>
       <h2>the endless march of time</h2>
-      <div className="icon">{coffeeIcon}</div>
-
+      {diceD20Icon}
+      {umbrellaBeachIcon}
       <p>First day of the month view is: {firstDayOfMonth()}</p>
       <p>Last day of the month view is: {'to be determined'}</p>
       {displaySelectedDay()}

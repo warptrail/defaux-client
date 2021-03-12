@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 
+import TokenService from '../../services/token-service';
+
 function EventForm(props) {
   // * Props
   const {
@@ -11,8 +13,6 @@ function EventForm(props) {
     event,
     selectedDay
   } = props;
-
-  console.log(categories);
 
   const setTime = event
     ? dayjs(event.timestamp).format('HH:mm')
@@ -39,7 +39,8 @@ function EventForm(props) {
     const makeNewEventObject = {
       info: eventInput.info,
       timestamp: newEventTimestamp,
-      date: selectedDay
+      date: selectedDay,
+      user_id: TokenService.parseJwt(TokenService.getAuthToken()).user_id
     };
 
     if (categories) {
@@ -75,16 +76,26 @@ function EventForm(props) {
 
   // render the categories in the selector from props
 
-  const renderCategorySelector = categories.map((category) => {
-    return (
+  const renderCategoryOptions = () => {
+    if (categories.length === 0) {
+      return <option value="none">No Category</option>;
+    }
+    const categoryOptions = categories.map((category) => (
       <option
         key={`option-${category.category_id}`}
         value={category.category_id}
       >
         {category.encoded_name}
       </option>
+    ));
+
+    const tagOnNoCategoryOption = (
+      <>
+        <option value="none">No Category</option>;{categoryOptions}
+      </>
     );
-  });
+    return tagOnNoCategoryOption;
+  };
 
   return (
     <form
@@ -109,7 +120,7 @@ function EventForm(props) {
         value={eventInput.category_id || 'none'}
         onChange={handleChange}
       >
-        {renderCategorySelector}
+        {renderCategoryOptions()}
       </select>
       <label>Time</label>
       <input

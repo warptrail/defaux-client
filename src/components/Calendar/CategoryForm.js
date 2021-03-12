@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import IconSelector from './IconSelector';
 
 function CategoryForm(props) {
   // * State
   const [state, setState] = useState({
     realName: 'General',
     encodedName: 'eeroy',
-    icon: 'circle',
+    icon: 'coffee',
     color: '#000'
   });
 
@@ -96,20 +97,21 @@ function CategoryForm(props) {
       />
 
       <label htmlFor="categoryIcon">Category Font Awesome Icon</label>
-      <input
+      <IconSelector handleChange={handleChange} />
+      {/* <input
         name="categoryIcon"
         type="text"
         onChange={handleChange}
         value={state.icon}
         required
-      />
+      /> */}
 
       <label htmlFor="categoryIconColor">Icon Color #</label>
       <input
         name="categoryIconColor"
         type="text"
         onChange={handleChange}
-        value={state.color}
+        defaultValue={state.color}
         required
       />
       <button type="submit">

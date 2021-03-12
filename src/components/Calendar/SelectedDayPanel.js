@@ -28,6 +28,7 @@ function SelectedDayPanel(props) {
 
   const RenderEventsForSelectedDay = EventsForSelectedDay.map(
     (event, index) => {
+      console.log(event);
       return (
         <li key={index}>
           {event.info} - {event.real_name}

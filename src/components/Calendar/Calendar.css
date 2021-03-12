@@ -71,6 +71,10 @@ button {
   height: 80px;
 }
 
+.calendar-day ul {
+  list-style: none;
+}
+
 .calendar-month {
   margin: 0 auto;
 }

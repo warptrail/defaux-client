@@ -1,6 +1,46 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faAnchor, // anchor
+  faLocationArrow, // location-arrow
+  faCoffee, // coffee
+  faCar, // car
+  faBicycle, // bicycle
+  faBeer,
+  faBomb,
+  faBan,
+  faBook,
+  faBug,
+  faCalendar,
+  faCamera,
+  faCodeBranch,
+  faDownload,
+  faEnvelope,
+  faFighterJet,
+  faFireExtinguisher,
+  faFlask,
+  faHeadphones,
+  faPen,
+  faShower,
+  faShoppingBasket,
+  faHamburger,
+  faDiceD20,
+  faCircle,
+  faBell,
+  faUmbrellaBeach,
+  faLeaf,
+  faLaptop,
+  faHourglass,
+  faMoon,
+  faRobot,
+  faPizzaSlice,
+  faHatCowboy,
+  faHammer
+} from '@fortawesome/free-solid-svg-icons';
+
 import Header from '../components/Header/Header';
 import PrivateRoute from '../utils/PrivateRoute';
 import PublicOnlyRoute from '../utils/PublicOnlyRoute';
@@ -18,6 +58,45 @@ import PayCalculatorRoute from '../routes/PayCalculatorRoute/PayCalculatorRoute.
 import Dogs from '../routes/DogsRoute/DogsRoute';
 import NotFoundRoute from '../routes/NotFoundRoute/NotFoundRoute';
 import './App.css';
+
+library.add(
+  fab,
+  faAnchor,
+  faLocationArrow,
+  faCoffee,
+  faCar,
+  faBicycle,
+  faBeer,
+  faBomb,
+  faBan,
+  faBook,
+  faBug,
+  faCalendar,
+  faCamera,
+  faCodeBranch,
+  faDownload,
+  faEnvelope,
+  faFighterJet,
+  faFireExtinguisher,
+  faFlask,
+  faHeadphones,
+  faPen,
+  faShower,
+  faShoppingBasket,
+  faHamburger,
+  faDiceD20,
+  faCircle,
+  faBell,
+  faUmbrellaBeach,
+  faLeaf,
+  faLaptop,
+  faHourglass,
+  faMoon,
+  faRobot,
+  faPizzaSlice,
+  faHatCowboy,
+  faHammer
+);
 
 export default class App extends Component {
   state = { hasError: false };
